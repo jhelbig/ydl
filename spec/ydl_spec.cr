@@ -36,9 +36,12 @@ describe Ydl::Video do
   end
 
   it "downloads the specified audio format" do
-    format = video.audio_formats.first
+    test_video = Ydl::Video.new("6COnmWCYNQE")
+    format = test_video.audio_formats.first
+    path = test_video.download(format)
 
-    video.download(format).should eq("Done!")
+    # path.should eq(test_video.download_name(format))
+    File.exists?(path).should eq(true)
   end
 end
 

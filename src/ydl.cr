@@ -20,9 +20,6 @@ module Ydl
     def initialize(json : JSON::Any)
       @title = json["title"].as_s
       @url = json["webpage_url"].as_s
-      # @formats = json["formats"].as_a
-      #   .select { |f| f["ext"].as_s == "mp4" || f["format_note"].as_s.includes?("audio") } 
-      #   .map { |f| Ydl::Format.new(f) } 
       @audio_formats = json["formats"].as_a
         .select { |f| f["format_note"].as_s.includes?("audio") }
         .map { |f| Ydl::Format.new(f) }
@@ -41,6 +38,29 @@ module Ydl
 
     def download(format : Ydl::Format)
       output = IO::Memory.new()
+      name = download_name(format).gsub(/mp\d$/) { "" }
+      dir = File.expand_path(File.join("~/", "ydl_downloads"))
+      Dir.mkdir_p(dir)
+      Dir.cd(dir)
+
+      ydl_args = [
+        "-f", format.id,
+        "-o", %<#{name}.%(ext)s>,
+        @url
+      ]
+
+      if format.resolution == "Audio"
+        ydl_args << "--audio-format"
+        ydl_args << "mp3"
+        ydl_args << "-x"
+      else
+        ydl_args << "--recode-video"
+        ydl_args << "mp4"
+      end
+
+      status = Process.run("youtube-dl", ydl_args)
+
+      File.join(dir, download_name(format))
     end
   end
 
