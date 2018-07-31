@@ -1,0 +1,7 @@
+# files: ./**/*.cr
+# run: crystal build ./src/ydl.cr
+files : ./**/*.cr
+run: crystal spec
+---
+files: ./shard.yml
+run: shards install
