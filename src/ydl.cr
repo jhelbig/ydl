@@ -37,9 +37,8 @@ module Ydl
     end
 
     def download(format : Ydl::Format)
-      output = IO::Memory.new()
-      name = download_name(format).gsub(/mp\d$/) { "" }
-      dir = File.expand_path(File.join("~/", "ydl_downloads"))
+      name = download_name(format).gsub(/\.mp\d$/) { "" }
+      dir = File.expand_path(File.join(ENV.fetch("YDL_PATH", "~/ydl_downloads")))
       Dir.mkdir_p(dir)
       Dir.cd(dir)
 

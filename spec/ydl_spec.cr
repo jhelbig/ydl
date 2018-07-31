@@ -43,6 +43,15 @@ describe Ydl::Video do
     # path.should eq(test_video.download_name(format))
     File.exists?(path).should eq(true)
   end
+
+  it "downloads the specified full format" do
+    test_video = Ydl::Video.new("6COnmWCYNQE")
+    format = test_video.full_formats.first
+    path = test_video.download(format)
+
+    # path.should eq(test_video.download_name(format))
+    File.exists?(path).should eq(true)
+  end
 end
 
 describe Ydl::Format do
