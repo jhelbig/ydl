@@ -41,23 +41,23 @@ describe Ydl::Video do
     video.download_name(format).should eq("Dungeon of the Endless Soundtrack (OST, 17 Tracks) - (50hz).mp3")
   end
 
-#   it "downloads the specified audio format" do
-#     test_video = Ydl::Video.new("6COnmWCYNQE")
-#     format = test_video.audio_formats.first
-#     path = test_video.download(format)
+  #   it "downloads the specified audio format" do
+  #     test_video = Ydl::Video.new("6COnmWCYNQE")
+  #     format = test_video.audio_formats.first
+  #     path = test_video.download(format)
 
-#     # path.should eq(test_video.download_name(format))
-#     File.exists?(path).should eq(true)
-#   end
+  #     # path.should eq(test_video.download_name(format))
+  #     File.exists?(path).should eq(true)
+  #   end
 
-#   it "downloads the specified full format" do
-#     test_video = Ydl::Video.new("6COnmWCYNQE")
-#     format = test_video.full_formats.first
-#     path = test_video.download(format)
+  #   it "downloads the specified full format" do
+  #     test_video = Ydl::Video.new("6COnmWCYNQE")
+  #     format = test_video.full_formats.first
+  #     path = test_video.download(format)
 
-#     # path.should eq(test_video.download_name(format))
-#     File.exists?(path).should eq(true)
-#   end
+  #     # path.should eq(test_video.download_name(format))
+  #     File.exists?(path).should eq(true)
+  #   end
 end
 
 describe Ydl::Format do

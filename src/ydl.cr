@@ -9,7 +9,7 @@ module Ydl
     getter full_formats : Array(Ydl::Format)
 
     def initialize(url : String)
-      output = IO::Memory.new()
+      output = IO::Memory.new
       Process.run("youtube-dl", ["-J", url], output: output)
       output.close
 
@@ -56,7 +56,7 @@ module Ydl
       ydl_args = [
         "-f", format.id,
         "-o", %<#{name}.%(ext)s>,
-        @url
+        @url,
       ]
 
       if format.resolution == "Audio"
@@ -74,14 +74,13 @@ module Ydl
     end
   end
 
-
   struct Format
     getter id : String
     getter resolution : String
     getter name : String
     getter ydl_name : String
     getter quality : Int32
-    
+
     def initialize(f : JSON::Any)
       f = f.as_h
       @id = f["format_id"].as_s
