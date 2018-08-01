@@ -4,6 +4,13 @@ require "JSON"
 describe Ydl::Video do
   video = Ydl::Video.new(JSON.parse(File.read(__DIR__ + "/full_response.json")))
 
+  it "fails on invalid url" do
+
+    expect_raises(Exception, "Invalid url") do
+      fail_video = Ydl::Video.new("invalid")
+    end
+  end
+
   it "has a title" do
     video.title.should eq("Dungeon of the Endless Soundtrack (OST, 17 Tracks)")
   end

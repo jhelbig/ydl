@@ -12,7 +12,12 @@ module Ydl
       output = IO::Memory.new()
       Process.run("youtube-dl", ["-J", url], output: output)
       output.close
-      obj = JSON.parse(output.to_s)
+
+      begin
+        obj = JSON.parse(output.to_s)
+      rescue
+        raise "Invalid url"
+      end
 
       initialize(obj)
     end
@@ -34,6 +39,12 @@ module Ydl
       else
         %<#{@title} - (#{format.quality}p).mp4>
       end
+    end
+
+    def download(id : String)
+      format = (@audio_formats + @full_formats).find { |f| f.id == id }
+
+      download(format.not_nil!)
     end
 
     def download(format : Ydl::Format)
@@ -74,19 +85,24 @@ module Ydl
     def initialize(f : JSON::Any)
       f = f.as_h
       @id = f["format_id"].as_s
-      if f.has_key?("width")
-        @resolution = %<#{f["width"]}x#{f["height"]}>
-      else
-        @resolution = "Audio"
+
+      @resolution = "Audio"
+
+      begin
+        @resolution = %<#{f["width"].as_i}x#{f["height"].as_i}>
+      rescue
+        puts("It appeared to be a video but had null resolution. Treating as audio")
       end
-      @name = f["format_note"].as_s
-      @ydl_name = f["format"].as_s
 
       if @resolution == "Audio"
         @quality = f["abr"].as_i
+        @name = "#{@quality}hz"
       else
         @quality = f["height"].as_i
+        @name = "#{@quality}p"
       end
+
+      @ydl_name = f["format"].as_s
     end
   end
 end
