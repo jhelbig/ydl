@@ -9,7 +9,7 @@ Add this to your application's `shard.yml`:
 ```yaml
 dependencies:
   ydl:
-    github: your-github-user/ydl
+    github: brobsc/ydl
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/ydl/fork>)
+1. Fork it (<https://github.com/brobsc/ydl/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -34,4 +34,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [your-github-user](https://github.com/your-github-user) Bruno - creator, maintainer
+- [brobsc](https://github.com/brobsc) Rob - creator, maintainer
