@@ -91,7 +91,7 @@ module Ydl
       begin
         @resolution = %<#{f["width"].as_i}x#{f["height"].as_i}>
       rescue
-        puts("It appeared to be a video but had null resolution. Treating as audio")
+        # puts("It appeared to be a video but had null resolution. Treating as audio")
       end
 
       if @resolution == "Audio"
