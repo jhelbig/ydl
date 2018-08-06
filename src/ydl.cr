@@ -1,5 +1,5 @@
 require "./ydl/*"
-require "JSON"
+require "json"
 
 module Ydl
   class Video
