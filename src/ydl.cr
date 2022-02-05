@@ -93,6 +93,8 @@ module Ydl
       end
 
       if @resolution == "Audio"
+        puts f["format_id"].as_s
+        puts f["abr"]
         @quality = f["abr"].as_f.ceil.to_i rescue 0
         @name = "#{@quality}hz"
       else
