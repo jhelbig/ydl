@@ -26,10 +26,10 @@ module Ydl
       @title = json["title"].as_s
       @url = json["webpage_url"].as_s
       @audio_formats = json["formats"].as_a
-        .select { |f| f["format_note"].as_s.includes?("audio") }
+        .select { |f| f["format_note"].as_s.includes?("tiny") }
         .map { |f| Ydl::Format.new(f) }
       @full_formats = json["formats"].as_a
-#         .select { |f| f["vcodec"] != "none" && f["acodec"] != "none" }
+        .select { |f| !f["format_note"].as_s.includes?("tiny") }
         .map { |f| Ydl::Format.new(f) }
     end
 
@@ -85,7 +85,7 @@ module Ydl
       f = f.as_h
       @id = f["format_id"].as_s
 
-      @resolution = "Audio"
+      @resolution = "Unknown"
 
       begin
         @resolution = %<#{f["width"].as_i}x#{f["height"].as_i}>
@@ -93,12 +93,12 @@ module Ydl
         # puts("It appeared to be a video but had null resolution. Treating as audio")
       end
 
-      if @resolution == "Audio"
-        @quality = f["abr"].as_i rescue 0
+      if f["format_note"] == "tiny"
+        @quality = f["abr"].ceil.to_i rescue 0
         @name = "#{@quality}hz"
       else
-        @quality = f["height"].as_i rescue 0
-        @name = "#{@quality}p"
+        @quality = f["format_note"].gsub(/p$/i, "").to_i
+        @name = f["format_note"]
       end
 
       @ydl_name = f["format"].as_s
