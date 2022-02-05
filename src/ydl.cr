@@ -94,7 +94,7 @@ module Ydl
       end
 
       if f["format_note"] == "tiny"
-        @quality = f["abr"].ceil.to_i rescue 0
+        @quality = f["abr"].as_f.ceil.to_i rescue 0
         @name = "#{@quality}hz"
       else
         @quality = f["format_note"].gsub(/p$/i, "").to_i
