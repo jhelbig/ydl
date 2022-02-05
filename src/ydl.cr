@@ -25,11 +25,11 @@ module Ydl
     def initialize(json : JSON::Any)
       @title = json["title"].as_s
       @url = json["webpage_url"].as_s
+      #.select { |f| f["format_note"].as_s.includes?("audio") }
       @audio_formats = json["formats"].as_a
-        .select { |f| f["format_note"].as_s.includes?("audio") }
         .map { |f| Ydl::Format.new(f) }
+      #.select { |f| f["vcodec"] != "none" && f["acodec"] != "none" }
       @full_formats = json["formats"].as_a
-        .select { |f| f["vcodec"] != "none" && f["acodec"] != "none" }
         .map { |f| Ydl::Format.new(f) }
     end
 
