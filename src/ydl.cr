@@ -98,7 +98,7 @@ module Ydl
         @name = "#{@quality}hz"
       else
         @quality = f["format_note"].as_s.gsub(/p$/i, "").to_i
-        @name = f["format_note"]
+        @name = f["format_note"].as_s
       end
 
       @ydl_name = f["format"].as_s
