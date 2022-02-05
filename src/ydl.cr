@@ -97,7 +97,7 @@ module Ydl
         @quality = f["abr"].as_f64
         @name = "#{@quality}hz"
       else
-        @quality = f["height"].as_i
+        @quality = f["height"].as_f64
         @name = "#{@quality}p"
       end
 
