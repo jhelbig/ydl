@@ -79,8 +79,7 @@ module Ydl
     getter resolution : String
     getter name : String
     getter ydl_name : String
-    getter quality : String
-
+    getter quality : Int32
     def initialize(f : JSON::Any)
       f = f.as_h
       @id = f["format_id"].as_s
