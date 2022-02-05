@@ -29,7 +29,7 @@ module Ydl
         .select { |f| f["format_note"].as_s.includes?("audio") }
         .map { |f| Ydl::Format.new(f) }
       @full_formats = json["formats"].as_a
-        .select { |f| f["vcodec"] != "none" && f["acodec"] != "none" }
+#         .select { |f| f["vcodec"] != "none" && f["acodec"] != "none" }
         .map { |f| Ydl::Format.new(f) }
     end
 
