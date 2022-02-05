@@ -97,7 +97,7 @@ module Ydl
         @quality = f["abr"].as_f.ceil.to_i rescue 0
         @name = "#{@quality}hz"
       else
-        @quality = f["format_note"].gsub(/p$/i, "").to_i
+        @quality = f["format_note"].as_s.gsub(/p$/i, "").to_i
         @name = f["format_note"]
       end
 
