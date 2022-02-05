@@ -94,7 +94,7 @@ module Ydl
       end
 
       if @resolution == "Audio"
-        @quality = f["abr"].as_i
+        @quality = f["abr"].as_f64
         @name = "#{@quality}hz"
       else
         @quality = f["height"].as_i
