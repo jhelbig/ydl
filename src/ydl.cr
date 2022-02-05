@@ -79,7 +79,7 @@ module Ydl
     getter resolution : String
     getter name : String
     getter ydl_name : String
-    getter quality : Float64
+    getter quality : String
 
     def initialize(f : JSON::Any)
       f = f.as_h
@@ -94,10 +94,10 @@ module Ydl
       end
 
       if @resolution == "Audio"
-        @quality = f["abr"].as_f
+        @quality = f["abr"].as_s
         @name = "#{@quality}hz"
       else
-        @quality = f["height"].as_f
+        @quality = f["height"].as_s
         @name = "#{@quality}p"
       end
 
