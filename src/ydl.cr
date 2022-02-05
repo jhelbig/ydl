@@ -79,7 +79,7 @@ module Ydl
     getter resolution : String
     getter name : String
     getter ydl_name : String
-    getter quality : Int32
+    getter quality : Float64
 
     def initialize(f : JSON::Any)
       f = f.as_h
