@@ -115,7 +115,7 @@ module Ydl
         "id": @id,
         "resolution": @resolution,
         "name": @name,
-        "ydl_name" @ydl_name,
+        "ydl_name": @ydl_name,
         "quality": @quality,
         "filesize": @filesize,
         "extension": @extension,
