@@ -109,5 +109,18 @@ module Ydl
 
       @ydl_name = f["format"].as_s
     end
+
+    def attributes()
+      return Hash(String, String | Int32 | Int64).new({
+        "id": @id,
+        "resolution": @resolution,
+        "name": @name,
+        "ydl_name" @ydl_name,
+        "quality": @quality,
+        "filesize": @filesize,
+        "extension": @extension,
+        "quality_grade": @quality_grade
+      })
+    end
   end
 end
