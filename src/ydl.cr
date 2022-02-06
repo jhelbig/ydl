@@ -5,6 +5,7 @@ module Ydl
   class Video
     getter title : String
     getter url : String
+    getter best_formats : Array(Ydl::Format)
     getter audio_formats : Array(Ydl::Format)
     getter full_formats : Array(Ydl::Format)
 
@@ -25,11 +26,15 @@ module Ydl
     def initialize(json : JSON::Any)
       @title = json["title"].as_s
       @url = json["webpage_url"].as_s
+      best_format_group = json["format_id"].as_s.split(/\+/)
       @audio_formats = json["formats"].as_a
         .select { |f| f["format_note"].as_s.includes?("tiny") }
         .map { |f| Ydl::Format.new(f) }
       @full_formats = json["formats"].as_a
         .select { |f| !f["format_note"].as_s.includes?("tiny") }
+        .map { |f| Ydl::Format.new(f) }
+      @best_formats = json["formats"].as_a
+        .select { |f| f["format_id"].as_s.includes?(best_format_group[0]) || f["format_id"].as_s.includes?(best_format_group[1]) }
         .map { |f| Ydl::Format.new(f) }
     end
 
