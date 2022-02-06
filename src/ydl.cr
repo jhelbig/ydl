@@ -88,7 +88,7 @@ module Ydl
       f = f.as_h
       @id = f["format_id"].as_s
       @filesize = f["filesize"].as_i64
-      @extension = f["extension"].as_s
+      @extension = f["ext"].as_s
       @quality_grade = f["quality"].as_i
 
       @resolution = "Not Applicable"
