@@ -52,15 +52,21 @@ module Ydl
       download(format.not_nil!)
     end
 
-    def download(format : Ydl::Format)
+    def download(format : Ydl::Format, filename : String = "")
       name = download_name(format).gsub(/\.mp\d$/) { "" }
       dir = File.expand_path(File.join(ENV.fetch("YDL_PATH", "~/ydl_downloads")))
       Dir.mkdir_p(dir)
       Dir.cd(dir)
 
+      if filename == ""
+        filename = %<#{name}.%(ext)s>
+      else
+        filename = %<#{filename}.%(ext)s>
+      end
+  
       ydl_args = [
         "-f", format.id,
-        "-o", %<#{name}.%(ext)s>,
+        "-o", filename,
         @url,
       ]
 
