@@ -80,12 +80,18 @@ module Ydl
     getter name : String
     getter ydl_name : String
     getter quality : Int32
+    getter filesize : Int64
+    getter extension : String
+    getter quality_grade : Int32
 
     def initialize(f : JSON::Any)
       f = f.as_h
       @id = f["format_id"].as_s
+      @filesize = f["filesize"].as_i64
+      @extension = f["extension"].as_s
+      @quality_grade = f["quality"].as_i
 
-      @resolution = "Unknown"
+      @resolution = "Not Applicable"
 
       begin
         @resolution = %<#{f["width"].as_i}x#{f["height"].as_i}>
