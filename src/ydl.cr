@@ -87,6 +87,7 @@ module Ydl
     def download_and_mux(formats : Array(Ydl::Format))
       audio_path = ""
       video_path = ""
+      name = ""
       formats.each{|format|
         name = download_name(format).gsub(/\.mp\d$/) { "" }
         dir = File.expand_path(File.join(ENV.fetch("YDL_PATH", "~/ydl_downloads")))
@@ -114,7 +115,7 @@ module Ydl
 
         File.join(dir, download_name(format))
       }
-      if audio_path != "" && video_path != ""
+#       if audio_path != "" && video_path != ""
         ffmpeg_args = [
           "-i", video_path,
           "-i", audio_path,
@@ -125,11 +126,11 @@ module Ydl
           "-c:a", "aac",
           "-map", "0:v:0",
           "-map", "1:a:0",
-          "output.mp4"
+          "%<#{dir}/output_#{name}.%(ext)s>"
         ]
 #         ffmpeg -i video.mp4 -i audio.webm -strict -2 -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 output.mp4
         status = Process.run("ffmpeg", ffmpeg_args)
-      end
+#       end
     end
   end
 
