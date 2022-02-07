@@ -88,11 +88,11 @@ module Ydl
       audio_path = ""
       video_path = ""
       name = ""
+      dir = File.expand_path(File.join(ENV.fetch("YDL_PATH", "~/ydl_downloads")))
+      Dir.mkdir_p(dir)
+      Dir.cd(dir)
       formats.each{|format|
         name = download_name(format).gsub(/\.mp\d$/) { "" }
-        dir = File.expand_path(File.join(ENV.fetch("YDL_PATH", "~/ydl_downloads")))
-        Dir.mkdir_p(dir)
-        Dir.cd(dir)
 
         ydl_args = [
           "-f", format.id,
