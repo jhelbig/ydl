@@ -118,9 +118,9 @@ module Ydl
         ffmpeg_args = [
           "-i", video_path,
           "-i", audio_path,
-          "-y"
-          "-strict"
-          "-2"
+          "-y",
+          "-strict",
+          "-2",
           "-c:v", "copy",
           "-c:a", "aac",
           "-map", "0:v:0",
