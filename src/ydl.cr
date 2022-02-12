@@ -96,7 +96,7 @@ module Ydl
 
         ydl_args = [
           "-f", format.id,
-          "-o", %<#{name}.%(ext)s>,
+          "-o", %<raw_#{name}.%(ext)s>,
           @url,
         ]
 
@@ -104,11 +104,11 @@ module Ydl
           ydl_args << "--audio-format"
           ydl_args << "mp3"
           ydl_args << "-x"
-          audio_path = %<#{dir}/#{download_name(format)}s>
+          audio_path = %<#{dir}/raw_#{download_name(format)}s>
         else
           ydl_args << "--recode-video"
           ydl_args << "mp4"
-          video_path = %<#{dir}/#{download_name(format)}s>
+          video_path = %<#{dir}/raw_#{download_name(format)}s>
         end
 
         status = Process.run("youtube-dl", ydl_args)
@@ -126,11 +126,10 @@ module Ydl
           "-c:a", "aac",
           "-map", "0:v:0",
           "-map", "1:a:0",
-          %<output_#{name}.mp4s>
+          "#{name}.mp4"
         ]
 #         ffmpeg -i video.mp4 -i audio.webm -strict -2 -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 output.mp4
         status = Process.run("ffmpeg", ffmpeg_args)
-        File.join(dir, %<output_#{name}.mp4s>)
 #       end
     end
   end
