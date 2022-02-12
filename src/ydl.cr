@@ -115,7 +115,7 @@ module Ydl
 
         File.join(dir, download_name(format))
       }
-#       if audio_path != "" && video_path != ""
+      if audio_path != "" && video_path != ""
         ffmpeg_args = [
           "-i", video_path,
           "-i", audio_path,
@@ -128,11 +128,10 @@ module Ydl
           "-map", "1:a:0",
           "#{name}.mp4"
         ]
-#         ffmpeg -i video.mp4 -i audio.webm -strict -2 -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 output.mp4
         status = Process.run("ffmpeg", ffmpeg_args)
-        puts status.inspect
-        puts "ffmpeg #{ffmpeg_args.join(" ")}"
-#       end
+        FileUtils.rm_rf([video_path, audio_path])
+        File.join(dir, "#{name}.mp4")
+      end
     end
   end
 
