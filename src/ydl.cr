@@ -130,6 +130,8 @@ module Ydl
         ]
 #         ffmpeg -i video.mp4 -i audio.webm -strict -2 -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 output.mp4
         status = Process.run("ffmpeg", ffmpeg_args)
+        puts status.inspect
+        puts "ffmpeg #{ffmpeg_args.join(" ")}"
 #       end
     end
   end
