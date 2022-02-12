@@ -126,10 +126,10 @@ module Ydl
           "-c:a", "aac",
           "-map", "0:v:0",
           "-map", "1:a:0",
-          "%<#{dir}/output_#{name}.%(ext)s>"
+          %<#{dir}/output_#{name}.%(ext)s>
         ]
 #         ffmpeg -i video.mp4 -i audio.webm -strict -2 -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 output.mp4
-        touch_args = ["%<#{dir}/output_#{name}.%(ext)s>"]
+        touch_args = [%<#{dir}/output_#{name}.%(ext)s>]
         status = Process.run("touch", touch_args)
         #status = Process.run("ffmpeg", ffmpeg_args)
 #       end
