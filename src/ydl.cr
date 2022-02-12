@@ -40,9 +40,9 @@ module Ydl
 
     def download_name(format : Ydl::Format)
       if format.resolution == "Audio"
-        %<#{@title.scrub("")} - (#{format.quality}hz).mp3>
+        %<#{@title.scrub("").gsub(/[\/\\]/, "_")} - (#{format.quality}hz).mp3>
       else
-        %<#{@title.scrub("")} - (#{format.quality}p).mp4>
+        %<#{@title.scrub("").gsub(/[\/\\]/, "_")} - (#{format.quality}p).mp4>
       end
     end
 
