@@ -104,11 +104,11 @@ module Ydl
           ydl_args << "--audio-format"
           ydl_args << "mp3"
           ydl_args << "-x"
-          audio_path = %<#{dir}/raw_#{download_name(format)}s>
+          audio_path = "#{dir}/raw_#{download_name(format)}"
         else
           ydl_args << "--recode-video"
           ydl_args << "mp4"
-          video_path = %<#{dir}/raw_#{download_name(format)}s>
+          video_path = "#{dir}/raw_#{download_name(format)}"
         end
 
         status = Process.run("youtube-dl", ydl_args)
