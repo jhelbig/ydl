@@ -40,9 +40,9 @@ module Ydl
 
     def download_name(format : Ydl::Format)
       if format.resolution == "Audio"
-        %<'#{@title.scrub("")} - (#{format.quality}hz).mp3'>
+        %<#{@title.scrub("")} - (#{format.quality}hz).mp3>
       else
-        %<'#{@title.scrub("")} - (#{format.quality}p).mp4'>
+        %<#{@title.scrub("")} - (#{format.quality}p).mp4>
       end
     end
 
@@ -96,7 +96,7 @@ module Ydl
 
         ydl_args = [
           "-f", format.id,
-          "-o", %<#{name}.%(ext)s>,
+          "-o", %<'#{name}.%(ext)s'>,
           @url,
         ]
 
@@ -104,16 +104,16 @@ module Ydl
           ydl_args << "--audio-format"
           ydl_args << "mp3"
           ydl_args << "-x"
-          audio_path = %<#{dir}/#{name}.%(ext)s>
+          audio_path = %<'#{dir}/#{name}.%(ext)s'>
         else
           ydl_args << "--recode-video"
           ydl_args << "mp4"
-          video_path = %<#{dir}/#{name}.%(ext)s>
+          video_path = %<'#{dir}/#{name}.%(ext)s'>
         end
 
         status = Process.run("youtube-dl", ydl_args)
 
-        File.join(dir, download_name(format))
+        File.join(dir, "'#{download_name(format)}'")
       }
 #       if audio_path != "" && video_path != ""
         ffmpeg_args = [
@@ -126,12 +126,11 @@ module Ydl
           "-c:a", "aac",
           "-map", "0:v:0",
           "-map", "1:a:0",
-          %<#{dir}/output_#{name}.%(ext)s>
+          %<'output_#{name}.%(ext)s'>
         ]
 #         ffmpeg -i video.mp4 -i audio.webm -strict -2 -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 output.mp4
-        touch_args = [%<#{dir}/output_#{name}.%(ext)s>]
-        status = Process.run("touch", touch_args)
-        #status = Process.run("ffmpeg", ffmpeg_args)
+        status = Process.run("ffmpeg", ffmpeg_args)
+        File.join(dir, "'output_#{download_name(format)}'")
 #       end
     end
   end
