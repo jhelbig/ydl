@@ -145,6 +145,7 @@ module Ydl
     getter filesize : Int64
     getter extension : String
     getter quality_grade : Int32
+    getter muxed : Bool
 
     def initialize(f : JSON::Any)
       f = f.as_h
@@ -152,6 +153,10 @@ module Ydl
       @filesize = f["filesize"].as_i64 rescue 0.to_i64
       @extension = f["ext"].as_s
       @quality_grade = f["quality"].as_i
+      @muxed = false
+      if f["acodec"].not_nil? && f["vcodec"].not_nil?
+        @muxed = true
+      end
 
       @resolution = "Audio"
 
