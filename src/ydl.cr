@@ -6,9 +6,11 @@ module Ydl
   class Video
     getter title : String
     getter url : String
+    getter channel_url : String
     getter best_formats : Array(Ydl::Format)
     getter audio_formats : Array(Ydl::Format)
     getter full_formats : Array(Ydl::Format)
+    getter thumbnails : Array(Ydl::Thumbnail)
 
     def initialize(url : String)
       output = IO::Memory.new
@@ -27,6 +29,7 @@ module Ydl
     def initialize(json : JSON::Any)
       @title = json["title"].as_s
       @url = json["webpage_url"].as_s
+      @channel_url = json["channel_url"].as_s
       best_format_group = json["format_id"].as_s.split(/\+/)
       @audio_formats = json["formats"].as_a
         .select { |f| f["format_note"].as_s.includes?("tiny") }
@@ -37,6 +40,8 @@ module Ydl
       @best_formats = json["formats"].as_a
         .select { |f| f["format_id"].as_s.includes?(best_format_group[0]) || f["format_id"].as_s.includes?(best_format_group[1]) }
         .map { |f| Ydl::Format.new(f) }
+      @thumbnails = json["thumbnails"].as_a
+        .map { |tn| Ydl::Thumbnail.new(tn) }
     end
 
     def download_name(format : Ydl::Format)
@@ -135,6 +140,34 @@ module Ydl
       end
     end
   end
+  
+  
+  struct Thumbnail
+    getter id : String
+    getter resolution : String
+    getter width : Int32
+    getter height : Int32
+    getter url : String
+
+    def initialize(f : JSON::Any)
+      f = f.as_h
+      @id = f["id"].as_s
+      @resolution = f["resolution"].as_s
+      @width = f["width"].as_i
+      @height = f["height"].as_i
+      @url = f["url"].as_s
+    end
+
+    def attributes() : Hash(String, String | Int32)
+      return {
+        "id" => @id,
+        "resolution" => @resolution,
+        "width" => @width,
+        "height" => @height,
+        "url" => @url
+      }
+    end
+  end
 
   struct Format
     getter id : String
@@ -154,7 +187,7 @@ module Ydl
       @extension = f["ext"].as_s
       @quality_grade = f["quality"].as_i
       @muxed = false
-      if f["acodec"].not_nil? && f["vcodec"].not_nil?
+      if f["acodec"] != "none" && f["vcodec"] != "none"
         @muxed = true
       end
 
@@ -177,7 +210,7 @@ module Ydl
       @ydl_name = f["format"].as_s
     end
 
-    def attributes() : Hash(String, String | Int32 | Int64)
+    def attributes() : Hash(String, String | Int32 | Int64 | Bool)
       return {
         "id" => @id,
         "resolution" => @resolution,
@@ -186,7 +219,8 @@ module Ydl
         "quality" => @quality,
         "filesize" => @filesize,
         "extension" => @extension,
-        "quality_grade" => @quality_grade
+        "quality_grade" => @quality_grade,
+        "muxed" => @muxed
       }
     end
   end
