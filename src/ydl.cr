@@ -11,6 +11,7 @@ module Ydl
     getter audio_formats : Array(Ydl::Format)
     getter full_formats : Array(Ydl::Format)
     getter thumbnails : Array(Ydl::Thumbnail)
+    getter ydl_bin : String
 
     def initialize(url : String)
       output = IO::Memory.new
