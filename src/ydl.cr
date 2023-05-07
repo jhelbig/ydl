@@ -14,7 +14,8 @@ module Ydl
 
     def initialize(url : String)
       output = IO::Memory.new
-      Process.run("youtube-dl", ["-J", url], output: output)
+      @ydl_bin = ENV.fetch("YDL_BIN_PATH", "youtube-dl")
+      Process.run(@ydl_bin, ["-J", url], output: output)
       output.close
 
       begin
@@ -85,7 +86,7 @@ module Ydl
         ydl_args << "mp4"
       end
 
-      status = Process.run("youtube-dl", ydl_args)
+      status = Process.run(@ydl_bin, ydl_args)
 
       File.join(dir, download_name(format))
     end
@@ -117,7 +118,7 @@ module Ydl
           video_path = "#{dir}/raw_#{download_name(format)}"
         end
 
-        status = Process.run("youtube-dl", ydl_args)
+        status = Process.run(@ydl_bin, ydl_args)
 
         File.join(dir, download_name(format))
       }
