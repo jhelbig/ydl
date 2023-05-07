@@ -14,7 +14,7 @@ module Ydl
 
     def initialize(url : String)
       output = IO::Memory.new
-      @ydl_bin = ENV.fetch("YDL_BIN_PATH", "youtube-dl").as_s
+      @ydl_bin = ENV.fetch("YDL_BIN_PATH", "youtube-dl").to_s
       Process.run(@ydl_bin, ["-J", url], output: output)
       output.close
 
@@ -28,7 +28,7 @@ module Ydl
     end
 
     def initialize(json : JSON::Any)
-      @ydl_bin = ENV.fetch("YDL_BIN_PATH", "youtube-dl").as_s
+      @ydl_bin = ENV.fetch("YDL_BIN_PATH", "youtube-dl").to_s
       @title = json["title"].as_s
       @url = json["webpage_url"].as_s
       @channel_url = json["channel_url"].as_s
