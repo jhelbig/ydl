@@ -11,7 +11,6 @@ module Ydl
     getter audio_formats : Array(Ydl::Format)
     getter full_formats : Array(Ydl::Format)
     getter thumbnails : Array(Ydl::Thumbnail)
-    getter ydl_bin : String
 
     def initialize(url : String)
       output = IO::Memory.new
@@ -29,6 +28,7 @@ module Ydl
     end
 
     def initialize(json : JSON::Any)
+      @ydl_bin = ENV.fetch("YDL_BIN_PATH", "youtube-dl").as_s
       @title = json["title"].as_s
       @url = json["webpage_url"].as_s
       @channel_url = json["channel_url"].as_s
