@@ -34,15 +34,16 @@ module Ydl
       @channel_url = json["channel_url"].as_s
       best_format_group = json["format_id"].as_s.split(/\+/)
       @audio_formats = json["formats"].as_a
-        .select { |f| f["format_note"].as_s.includes?("tiny") }
+        .select { |f| f["video_ext"].as_s.includes?("none") && f.as_h.has_key?("quality") }
         .map { |f| Ydl::Format.new(f) }
       @full_formats = json["formats"].as_a
-        .select { |f| !f["format_note"].as_s.includes?("tiny") }
+        .select { |f| f.as_h.has_key?("quality") }
         .map { |f| Ydl::Format.new(f) }
       @best_formats = json["formats"].as_a
-        .select { |f| f["format_id"].as_s.includes?(best_format_group[0]) || f["format_id"].as_s.includes?(best_format_group[1]) }
+        .select { |f| (f["format_id"].as_s.includes?(best_format_group[0]) || f["format_id"].as_s.includes?(best_format_group[1])) && f.as_h.has_key?("quality") }
         .map { |f| Ydl::Format.new(f) }
       @thumbnails = json["thumbnails"].as_a
+        .select { |f|  f.as_h.has_key?("quality") }
         .map { |tn| Ydl::Thumbnail.new(tn) }
     end
 
@@ -71,7 +72,7 @@ module Ydl
       else
         filename = %<#{filename}.%(ext)s>
       end
-  
+
       ydl_args = [
         "-f", format.id,
         "-o", filename,
@@ -142,8 +143,8 @@ module Ydl
       end
     end
   end
-  
-  
+
+
   struct Thumbnail
     getter id : String
     getter resolution : String
@@ -179,7 +180,7 @@ module Ydl
     getter quality : Int32
     getter filesize : Int64
     getter extension : String
-    getter quality_grade : Int32
+    getter quality_grade : Float64
     getter muxed : Bool
 
     def initialize(f : JSON::Any)
@@ -187,7 +188,7 @@ module Ydl
       @id = f["format_id"].as_s
       @filesize = f["filesize"].as_i64 rescue 0.to_i64
       @extension = f["ext"].as_s
-      @quality_grade = f["quality"].as_i
+      @quality_grade = f["quality"].as_f
       @muxed = false
       if f["acodec"] != "none" && f["vcodec"] != "none"
         @muxed = true
@@ -201,7 +202,7 @@ module Ydl
         # puts("It appeared to be a video but had null resolution. Treating as audio")
       end
 
-      if f["format_note"] == "tiny"
+      if f["video_ext"] == "none"
         @quality = f["abr"].as_f.ceil.to_i rescue 0
         @name = "#{@quality}hz"
       else
@@ -212,7 +213,7 @@ module Ydl
       @ydl_name = f["format"].as_s
     end
 
-    def attributes() : Hash(String, String | Int32 | Int64 | Bool)
+    def attributes() : Hash(String, String | Int32 | Int64 | Float64 | Bool)
       return {
         "id" => @id,
         "resolution" => @resolution,
